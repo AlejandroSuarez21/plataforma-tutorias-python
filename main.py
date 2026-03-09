@@ -29,6 +29,16 @@ def ver_tutores():
     for t in datos.obtener_tutores():
         lista_tutores.insert(tk.END,t[0]+" - "+t[1])
 
+def buscar_materia():
+    materia = entry_buscar.get()
+
+    lista_tutores.delete(0, tk.END)
+
+    resultado = datos.buscar_por_materia(materia)
+
+    for t in resultado:
+        lista_tutores.insert(tk.END, t[0] + " - " + t[1])
+
 def agendar():
     estudiante = entry_estudiante_tutoria.get()
     tutor = entry_tutor_tutoria.get()
@@ -38,9 +48,10 @@ def agendar():
 
     messagebox.showinfo("Correcto","Tutoría agendada")
 
+
 ventana = tk.Tk()
 ventana.title("Sistema de Tutorías")
-ventana.geometry("450x550")
+ventana.geometry("450x600")
 
 tk.Label(ventana,text="PLATAFORMA DE TUTORÍAS",font=("Arial",16)).pack(pady=10)
 
@@ -74,6 +85,15 @@ lista_tutores.pack(pady=5)
 
 tk.Button(ventana,text="Mostrar Tutores",command=ver_tutores).pack()
 
+# BUSCAR POR MATERIA
+
+tk.Label(ventana,text="Buscar tutor por materia").pack()
+
+entry_buscar = tk.Entry(ventana)
+entry_buscar.pack()
+
+tk.Button(ventana,text="Buscar",command=buscar_materia).pack()
+
 # AGENDAR TUTORIA
 
 tk.Label(ventana,text="Agendar Tutoría").pack()
@@ -90,12 +110,3 @@ entry_materia_tutoria.pack()
 tk.Button(ventana,text="Agendar",command=agendar).pack(pady=10)
 
 ventana.mainloop()
-def buscar_materia():
-    materia = entry_buscar.get()
-
-    lista_tutores.delete(0, tk.END)
-
-    resultado = datos.buscar_por_materia(materia)
-
-    for t in resultado:
-        lista_tutores.insert(tk.END, t[0] + " - " + t[1])
