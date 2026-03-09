@@ -1,51 +1,92 @@
 import tkinter as tk
 from tkinter import messagebox
-
-tutores = []
+import datos
 
 def registrar_tutor():
-    nombre = entrada_nombre.get()
-    materia = entrada_materia.get()
+    nombre = entry_tutor.get()
+    materia = entry_materia.get()
 
     if nombre == "" or materia == "":
-        messagebox.showwarning("Error", "Complete todos los campos")
+        messagebox.showwarning("Error","Complete los campos")
         return
 
-    tutores.append((nombre, materia))
-    messagebox.showinfo("Éxito", "Tutor registrado")
+    datos.agregar_tutor(nombre,materia)
+    messagebox.showinfo("Listo","Tutor registrado")
 
-    entrada_nombre.delete(0, tk.END)
-    entrada_materia.delete(0, tk.END)
+def registrar_estudiante():
+    nombre = entry_estudiante.get()
 
-def mostrar_tutores():
-    lista.delete(0, tk.END)
+    if nombre == "":
+        messagebox.showwarning("Error","Ingrese nombre")
+        return
 
-    for tutor in tutores:
-        lista.insert(tk.END, tutor[0] + " - " + tutor[1])
+    datos.agregar_estudiante(nombre)
+    messagebox.showinfo("Listo","Estudiante registrado")
 
+def ver_tutores():
+    lista_tutores.delete(0,tk.END)
+
+    for t in datos.obtener_tutores():
+        lista_tutores.insert(tk.END,t[0]+" - "+t[1])
+
+def agendar():
+    estudiante = entry_estudiante_tutoria.get()
+    tutor = entry_tutor_tutoria.get()
+    materia = entry_materia_tutoria.get()
+
+    datos.agendar_tutoria(estudiante,tutor,materia)
+
+    messagebox.showinfo("Correcto","Tutoría agendada")
 
 ventana = tk.Tk()
-ventana.title("Plataforma de Tutorías")
-ventana.geometry("400x400")
+ventana.title("Sistema de Tutorías")
+ventana.geometry("450x550")
 
-titulo = tk.Label(ventana, text="Sistema de Tutorías", font=("Arial", 16))
-titulo.pack(pady=10)
+tk.Label(ventana,text="PLATAFORMA DE TUTORÍAS",font=("Arial",16)).pack(pady=10)
 
-tk.Label(ventana, text="Nombre del tutor").pack()
-entrada_nombre = tk.Entry(ventana)
-entrada_nombre.pack()
+# REGISTRAR TUTOR
 
-tk.Label(ventana, text="Materia").pack()
-entrada_materia = tk.Entry(ventana)
-entrada_materia.pack()
+tk.Label(ventana,text="Registrar Tutor").pack()
 
-boton_registrar = tk.Button(ventana, text="Registrar tutor", command=registrar_tutor)
-boton_registrar.pack(pady=10)
+entry_tutor = tk.Entry(ventana)
+entry_tutor.pack()
 
-boton_mostrar = tk.Button(ventana, text="Mostrar tutores", command=mostrar_tutores)
-boton_mostrar.pack()
+entry_materia = tk.Entry(ventana)
+entry_materia.pack()
 
-lista = tk.Listbox(ventana)
-lista.pack(pady=10, fill=tk.BOTH, expand=True)
+tk.Button(ventana,text="Registrar Tutor",command=registrar_tutor).pack(pady=5)
+
+# REGISTRAR ESTUDIANTE
+
+tk.Label(ventana,text="Registrar Estudiante").pack()
+
+entry_estudiante = tk.Entry(ventana)
+entry_estudiante.pack()
+
+tk.Button(ventana,text="Registrar Estudiante",command=registrar_estudiante).pack(pady=5)
+
+# VER TUTORES
+
+tk.Label(ventana,text="Tutores disponibles").pack()
+
+lista_tutores = tk.Listbox(ventana)
+lista_tutores.pack(pady=5)
+
+tk.Button(ventana,text="Mostrar Tutores",command=ver_tutores).pack()
+
+# AGENDAR TUTORIA
+
+tk.Label(ventana,text="Agendar Tutoría").pack()
+
+entry_estudiante_tutoria = tk.Entry(ventana)
+entry_estudiante_tutoria.pack()
+
+entry_tutor_tutoria = tk.Entry(ventana)
+entry_tutor_tutoria.pack()
+
+entry_materia_tutoria = tk.Entry(ventana)
+entry_materia_tutoria.pack()
+
+tk.Button(ventana,text="Agendar",command=agendar).pack(pady=10)
 
 ventana.mainloop()
