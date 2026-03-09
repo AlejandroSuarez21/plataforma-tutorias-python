@@ -90,3 +90,12 @@ entry_materia_tutoria.pack()
 tk.Button(ventana,text="Agendar",command=agendar).pack(pady=10)
 
 ventana.mainloop()
+def buscar_materia():
+    materia = entry_buscar.get()
+
+    lista_tutores.delete(0, tk.END)
+
+    resultado = datos.buscar_por_materia(materia)
+
+    for t in resultado:
+        lista_tutores.insert(tk.END, t[0] + " - " + t[1])
